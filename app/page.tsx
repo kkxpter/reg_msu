@@ -99,16 +99,7 @@ export default function RegistrationSystem() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
         
         {/* แบนเนอร์ */}
-        <div className="w-full h-[100px] md:h-[120px] bg-gray-200 flex items-center justify-between px-4 overflow-hidden relative">
-           <button 
-             onClick={() => setIsMobileMenuOpen(true)}
-             className="md:hidden z-10 bg-white/90 p-2 rounded-md shadow-sm border border-gray-300 hover:bg-gray-50 transition"
-           >
-             <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-             </svg>
-           </button>
-
+        <div className="w-full h-[100px] md:h-[120px] bg-gray-200 overflow-hidden relative">
            <img 
              src="/banner.webp" 
              alt="MSU Banner" 
@@ -116,41 +107,55 @@ export default function RegistrationSystem() {
            />
         </div>
         
-        {/* แถบเลือกภาษา */}
-        <div className="bg-[#303030] text-gray-300 text-sm py-2 md:py-3 px-6 md:px-20 lg:px-40 flex justify-end items-center">
-          <span className="mr-3 font-medium hidden sm:inline">เลือกภาษา / Language</span>
+        {/* แถบเลือกภาษา และ ปุ่มเมนูมือถือ */}
+        <div className="bg-[#303030] text-gray-300 text-sm py-2 md:py-3 px-4 md:px-20 lg:px-40 flex justify-between md:justify-end items-center">
           
-          <div className="relative">
-            <button 
-              onClick={() => setIsLangOpen(!isLangOpen)}
-              className="bg-white text-gray-700 font-medium px-4 py-1.5 rounded-sm border border-gray-200 shadow-sm outline-none focus:ring-2 focus:ring-blue-500 text-xs flex items-center justify-between min-w-[100px] transition-all hover:bg-gray-50"
-            >
-              <span>{selectedLang === "th" ? "ภาษาไทย" : "English"}</span>
-              <svg className={`fill-current h-4 w-4 text-gray-500 ml-2 transition-transform duration-200 ${isLangOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-              </svg>
-            </button>
+          {/* ปุ่ม Hamburger ซ้ายมือ (ย้ายลงมาแถบนี้) */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="md:hidden flex items-center justify-center p-1.5 rounded-sm border border-gray-500 hover:bg-gray-700 transition"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
 
-            {isLangOpen && (
-              <div className="absolute top-full right-0 mt-2 w-full min-w-[110px] bg-white rounded-md shadow-lg border border-gray-100 overflow-hidden z-50 text-xs">
-                <button
-                  onClick={() => { setSelectedLang("th"); setIsLangOpen(false); }}
-                  className={`w-full text-left px-4 py-3 transition-colors ${
-                    selectedLang === "th" ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  ภาษาไทย
-                </button>
-                <button
-                  onClick={() => { setSelectedLang("en"); setIsLangOpen(false); }}
-                  className={`w-full text-left px-4 py-3 transition-colors ${
-                    selectedLang === "en" ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  English
-                </button>
-              </div>
-            )}
+          {/* ฝั่งขวา: ช่องเลือกภาษา */}
+          <div className="flex items-center">
+            <span className="mr-3 font-medium hidden sm:inline">เลือกภาษา / Language</span>
+            
+            <div className="relative">
+              <button 
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="bg-white text-gray-700 font-medium px-4 py-1.5 rounded-sm border border-gray-200 shadow-sm outline-none focus:ring-2 focus:ring-blue-500 text-xs flex items-center justify-between min-w-[100px] transition-all hover:bg-gray-50"
+              >
+                <span>{selectedLang === "th" ? "ภาษาไทย" : "English"}</span>
+                <svg className={`fill-current h-4 w-4 text-gray-500 ml-2 transition-transform duration-200 ${isLangOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
+              </button>
+
+              {isLangOpen && (
+                <div className="absolute top-full right-0 mt-2 w-full min-w-[110px] bg-white rounded-md shadow-lg border border-gray-100 overflow-hidden z-50 text-xs">
+                  <button
+                    onClick={() => { setSelectedLang("th"); setIsLangOpen(false); }}
+                    className={`w-full text-left px-4 py-3 transition-colors ${
+                      selectedLang === "th" ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    ภาษาไทย
+                  </button>
+                  <button
+                    onClick={() => { setSelectedLang("en"); setIsLangOpen(false); }}
+                    className={`w-full text-left px-4 py-3 transition-colors ${
+                      selectedLang === "en" ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    English
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -178,7 +183,6 @@ export default function RegistrationSystem() {
           </button>
         </div>
         
-        {/* เมนูมือถือ ปรับให้มีกรอบเหมือนจอคอม */}
         <div className="flex flex-col p-4 gap-2 bg-white">
           {currentSidebar.map((menu, index) => (
             <button 
@@ -207,10 +211,6 @@ export default function RegistrationSystem() {
           
           {/* ================= 1. Sidebar ฝั่งซ้าย (จอคอม) ================= */}
           <aside className="w-[280px] hidden md:flex flex-col bg-white border-r-[4px] border-gray-200 min-h-full">
-            {/* 
-                px-5: ทำให้ห่างจากขอบจอซ้าย และ ห่างจากขอบเส้นสีเทาขวา เท่ากัน (ฝั่งละ 20px) 
-                gap-2: เว้นระยะระหว่างปุ่มให้เห็นกรอบ 4 เหลี่ยมชัดเจน
-            */}
             <div className="flex flex-col w-full pt-8 px-5 gap-2"> 
               {currentSidebar.map((menu, index) => (
                 <button 
@@ -218,8 +218,8 @@ export default function RegistrationSystem() {
                   onClick={() => setActiveMenu(menu)}
                   className={`text-left px-4 py-3 text-[14.5px] font-bold transition-all w-full rounded-sm ${
                     activeMenu === menu 
-                      ? "bg-[#FFD738] text-black border border-orange-500 shadow-sm" // ปุ่มที่กำลังเลือกอยู่
-                      : "bg-white text-gray-700 border border-gray-300 hover:bg-[#FFD738] hover:text-black hover:border-orange-500" // ปุ่มปกติและการ Hover
+                      ? "bg-[#FFD738] text-black border border-orange-500 shadow-sm"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-[#FFD738] hover:text-black hover:border-orange-500"
                   }`}
                 >
                   {menu}
@@ -269,7 +269,7 @@ export default function RegistrationSystem() {
                   {currentTabContent[activeTab].map((item, index) => (
                     <button 
                       key={index}
-                      className="w-full bg-[#fde876] text-gray-900 py-3.5 px-4 font-bold text-[15px] border border-[#d4b320] shadow-sm hover:bg-[#FFCD23] transition-colors rounded-sm text-center"
+                      className="w-full bg-[#fde876] text-gray-900 py-3.5 px-4 font-bold text-[15px] border border-[#d4b320] shadow-sm hover:bg-[#f5dd5c] transition-colors rounded-sm text-center"
                     >
                       {item}
                     </button>
@@ -347,4 +347,4 @@ export default function RegistrationSystem() {
       </footer>
     </div>
   );
-}
+} 
