@@ -100,7 +100,7 @@ export default function RegistrationSystem() {
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
         
         {/* Banner Section */}
-        <div className="w-full h-[80px] md:h-[100px] bg-slate-100 flex items-center justify-center overflow-hidden relative">
+        <div className="w-full h-[80px] md:h-[120px] bg-slate-100 flex items-center justify-center overflow-hidden relative">
            <img 
              src="/banner.webp" 
              alt="MSU Banner" 
