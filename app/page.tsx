@@ -7,6 +7,8 @@ export default function RegistrationSystem() {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState("th"); 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const [activeMenu, setActiveMenu] = useState("");
 
   // ================= ข้อมูลภาษาไทย (TH) =================
   const sidebarMenusTH = [
@@ -91,14 +93,13 @@ export default function RegistrationSystem() {
   const currentTabContent = selectedLang === "th" ? tabContentTH : tabContentEN;
 
   return (
-    <div className="min-h-screen bg-[#FFF9D4] flex flex-col font-sans relative">
+    <div className="min-h-screen bg-white flex flex-col font-sans relative">
       
       {/* ================= Navbar ด้านบน ================= */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
         
         {/* แบนเนอร์ */}
         <div className="w-full h-[100px] md:h-[120px] bg-gray-200 flex items-center justify-between px-4 overflow-hidden relative">
-           {/* ปุ่ม Hamburger ซ้ายมือ */}
            <button 
              onClick={() => setIsMobileMenuOpen(true)}
              className="md:hidden z-10 bg-white/90 p-2 rounded-md shadow-sm border border-gray-300 hover:bg-gray-50 transition"
@@ -122,7 +123,7 @@ export default function RegistrationSystem() {
           <div className="relative">
             <button 
               onClick={() => setIsLangOpen(!isLangOpen)}
-              className="bg-white text-gray-700 font-medium px-4 py-1.5 rounded-full border border-gray-200 shadow-sm outline-none focus:ring-2 focus:ring-blue-500 text-xs flex items-center justify-between min-w-[100px] transition-all hover:bg-gray-50"
+              className="bg-white text-gray-700 font-medium px-4 py-1.5 rounded-sm border border-gray-200 shadow-sm outline-none focus:ring-2 focus:ring-blue-500 text-xs flex items-center justify-between min-w-[100px] transition-all hover:bg-gray-50"
             >
               <span>{selectedLang === "th" ? "ภาษาไทย" : "English"}</span>
               <svg className={`fill-current h-4 w-4 text-gray-500 ml-2 transition-transform duration-200 ${isLangOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -131,10 +132,10 @@ export default function RegistrationSystem() {
             </button>
 
             {isLangOpen && (
-              <div className="absolute top-full right-0 mt-2 w-full min-w-[110px] bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 p-1 text-xs">
+              <div className="absolute top-full right-0 mt-2 w-full min-w-[110px] bg-white rounded-md shadow-lg border border-gray-100 overflow-hidden z-50 text-xs">
                 <button
                   onClick={() => { setSelectedLang("th"); setIsLangOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 transition-colors ${
+                  className={`w-full text-left px-4 py-3 transition-colors ${
                     selectedLang === "th" ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
@@ -142,7 +143,7 @@ export default function RegistrationSystem() {
                 </button>
                 <button
                   onClick={() => { setSelectedLang("en"); setIsLangOpen(false); }}
-                  className={`w-full text-left px-4 py-2.5 transition-colors ${
+                  className={`w-full text-left px-4 py-3 transition-colors ${
                     selectedLang === "en" ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
@@ -164,7 +165,7 @@ export default function RegistrationSystem() {
       )}
 
       <div 
-        className={`fixed top-0 left-0 h-full w-[280px] bg-[#f9f9f9] z-[70] transform transition-transform duration-300 ease-in-out md:hidden shadow-2xl overflow-y-auto ${
+        className={`fixed top-0 left-0 h-full w-[280px] bg-white z-[70] transform transition-transform duration-300 ease-in-out md:hidden shadow-2xl overflow-y-auto ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -177,12 +178,20 @@ export default function RegistrationSystem() {
           </button>
         </div>
         
-        <div className="flex flex-col gap-[2px] p-2 bg-gray-200">
+        {/* เมนูมือถือ ปรับให้มีกรอบเหมือนจอคอม */}
+        <div className="flex flex-col p-4 gap-2 bg-white">
           {currentSidebar.map((menu, index) => (
             <button 
               key={index} 
-              onClick={() => setIsMobileMenuOpen(false)} 
-              className="bg-white text-left px-4 py-4 text-sm font-bold text-gray-700 hover:bg-[#FFD738] hover:text-black border-l-[4px] border-transparent hover:border-blue-800 rounded-sm shadow-sm transition duration-200"
+              onClick={() => {
+                setActiveMenu(menu);
+                setIsMobileMenuOpen(false);
+              }}
+              className={`text-left px-4 py-3 text-[14.5px] font-bold transition-all w-full rounded-sm ${
+                activeMenu === menu 
+                  ? "bg-[#FFD738] text-black border border-orange-500 shadow-sm" 
+                  : "bg-white text-gray-800 border border-gray-300 hover:bg-[#FFD738] hover:text-black hover:border-orange-500"
+              }`}
             >
               {menu}
             </button>
@@ -192,97 +201,124 @@ export default function RegistrationSystem() {
 
 
       {/* ================= Main Content Area ================= */}
-      <main className="flex-1 pt-36 md:pt-48 pb-10 flex justify-center w-full px-4 md:px-0">
-        <div className="w-full max-w-[1200px] bg-[#e3e3e7] flex flex-col p-4 gap-4 rounded-lg shadow-sm">
+      <main className="flex-1 pt-36 md:pt-40 flex justify-center w-full bg-white">
+        
+        <div className="w-full max-w-[1300px] flex">
           
-          <div className="flex overflow-hidden whitespace-nowrap w-full pt-4 pb-2 border-b border-gray-300">
-            <div className="animate-marquee">
-              <span className="text-blue-800 font-bold underline text-base md:text-lg">
-                msu wisdom เรียนได้ทุกที่ ทุกเวลา ทุกช่วงวัย &quot;เก็บหน่วยกิตได้ตลอดชีวิต&quot; กับ ระบบคลังหน่วยกิตมหาวิทยาลัยมหาสารคาม
-              </span>
-            </div>
-          </div>
-
-          <div className="flex gap-6 w-full pt-2">
-            
-            {/* Sidebar จอคอม */}
-            <aside className="w-[280px] hidden md:flex flex-col gap-2">
+          {/* ================= 1. Sidebar ฝั่งซ้าย (จอคอม) ================= */}
+          <aside className="w-[280px] hidden md:flex flex-col bg-white border-r-[4px] border-gray-200 min-h-full">
+            {/* 
+                px-5: ทำให้ห่างจากขอบจอซ้าย และ ห่างจากขอบเส้นสีเทาขวา เท่ากัน (ฝั่งละ 20px) 
+                gap-2: เว้นระยะระหว่างปุ่มให้เห็นกรอบ 4 เหลี่ยมชัดเจน
+            */}
+            <div className="flex flex-col w-full pt-8 px-5 gap-2"> 
               {currentSidebar.map((menu, index) => (
                 <button 
                   key={index} 
-                  className="bg-white text-left px-4 py-4 text-sm font-bold text-gray-700 hover:bg-[#FFD738] hover:text-black border-l-[4px] border-transparent hover:border-blue-800 rounded-md shadow-sm transition duration-200"
+                  onClick={() => setActiveMenu(menu)}
+                  className={`text-left px-4 py-3 text-[14.5px] font-bold transition-all w-full rounded-sm ${
+                    activeMenu === menu 
+                      ? "bg-[#FFD738] text-black border border-orange-500 shadow-sm" // ปุ่มที่กำลังเลือกอยู่
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-[#FFD738] hover:text-black hover:border-orange-500" // ปุ่มปกติและการ Hover
+                  }`}
                 >
                   {menu}
                 </button>
               ))}
-            </aside>
+            </div>
+          </aside>
 
-            {/* เนื้อหาด้านขวา */}
-            <section className="flex-1 flex flex-col w-full overflow-hidden">
+          {/* ================= 2. เนื้อหาฝั่งขวา ================= */}
+          <section className="flex-1 flex flex-col w-full overflow-hidden p-4 md:p-10">
+            
+            {/* ตัววิ่ง */}
+            <div className="flex overflow-hidden whitespace-nowrap w-full pb-4 mb-8 border-b border-gray-300">
+              <div className="animate-marquee">
+                <span className="text-blue-800 font-bold underline text-base md:text-lg">
+                  msu wisdom เรียนได้ทุกที่ ทุกเวลา ทุกช่วงวัย &quot;เก็บหน่วยกิตได้ตลอดชีวิต&quot; กับ ระบบคลังหน่วยกิตมหาวิทยาลัยมหาสารคาม
+                </span>
+              </div>
+            </div>
+
+            {/* ================= กล่องที่ 1: ส่วนปฏิทิน/เอกสาร ================= */}
+            <div className="bg-white border border-gray-300 flex flex-col md:flex-row mb-10 min-h-[400px]">
               
-              {/* แถบ Tabs ตัวเลือก (เพิ่ม md:justify-end กลับเข้าไปตรงนี้ครับ) */}
-              <div className="flex justify-end gap-4 md:gap-6 border-b border-gray-300 pb-2 mb-6 mt-2 pr-2 md:pr-8 overflow-x-auto whitespace-nowrap hide-scrollbar">
+              <div className="w-full md:w-[220px] flex flex-row md:flex-col gap-4 md:gap-6 border-b md:border-b-0 md:border-r border-gray-300 p-6 md:p-8 overflow-x-auto whitespace-nowrap hide-scrollbar">
                 {currentTabLabels.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`text-sm font-bold pb-1 flex-shrink-0 transition-colors ${
-                      activeTab === tab.id 
-                        ? "text-orange-500 border-b-2 border-orange-500" 
-                        : "text-blue-600 hover:text-blue-800"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* ส่วนปุ่มสีเหลือง */}
-              <div className="flex flex-col gap-3 mb-10">
-                {currentTabContent[activeTab].map((item, index) => (
-                  <button 
-                    key={index}
-                    className="w-full bg-[#fceea7] text-gray-800 py-3 md:py-4 px-2 font-bold text-sm md:text-lg rounded-sm border border-yellow-500 shadow-sm hover:bg-yellow-400 hover:scale-[1.01] transition-all"
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-
-              {/* กล่องประกาศ */}
-              <div className="flex flex-col gap-6 mt-4">
-                <div className="bg-white border border-gray-300 shadow-sm rounded-t-md overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="bg-[#303030] text-gray-200 p-3 text-xs md:text-sm font-medium">
-                    การยื่นเอกสารเทียบโอนรายวิชาศึกษาทั่วไป ประจำปีการศึกษา 2569 <span className="text-red-500 font-bold">(ด่วนมาก)</span>
+                  <div key={tab.id} className="w-full">
+                    <button
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`text-left text-[14.5px] font-bold pb-1 transition-colors ${
+                        activeTab === tab.id 
+                          ? "text-blue-500 border-b-2 border-blue-500 inline-block" 
+                          : "text-gray-600 hover:text-blue-500 inline-block"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
                   </div>
-                  <div className="p-4 md:p-6 text-xs md:text-sm text-gray-700 leading-relaxed">
-                    นิสิตที่กรอกข้อมูลเทียบโอนที่ https://geccc.msu.ac.th/Coursetransfer/ แล้ว ให้นำเอกสารคำร้องที่ อ.ที่ปรึกษาและหัวหน้าภาควิชา
+                ))}
+              </div>
+
+              <div className="flex-1 p-6 md:p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  {currentTabLabels.find(t => t.id === activeTab)?.label}
+                </h2>
+                
+                <div className="flex flex-col gap-3">
+                  {currentTabContent[activeTab].map((item, index) => (
+                    <button 
+                      key={index}
+                      className="w-full bg-[#fde876] text-gray-900 py-3.5 px-4 font-bold text-[15px] border border-[#d4b320] shadow-sm hover:bg-[#FFCD23] transition-colors rounded-sm text-center"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* ================= กล่องที่ 2: ส่วนข่าวสาร ================= */}
+            <div className="bg-white border border-gray-300 p-6 md:p-8">
+              
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">ข่าวสาร</h2>
+
+              <div className="flex flex-col gap-6">
+                
+                <div className="bg-white border border-gray-300 rounded-sm overflow-hidden">
+                  <div className="bg-[#303030] text-gray-100 p-3 text-xs md:text-[14px] font-medium">
+                    การยื่นเอกสารเทียบโอนรายวิชาศึกษาทั่วไป ประจำปีการศึกษา 2569 <span className="text-red-500 font-bold ml-1">(ด่วนมาก)</span>
+                  </div>
+                  <div className="p-5 md:p-6 text-xs md:text-[14px] text-gray-700 leading-relaxed">
+                    นิสิตที่กรอกข้อมูลเทียบโอนที่ <a href="#" className="text-blue-600 hover:underline">https://geccc.msu.ac.th/Coursetransfer/</a> แล้ว ให้นำเอกสารคำร้องที่ อ.ที่ปรึกษาและหัวหน้าภาควิชา
                     (รหัสนิสิตปัจจุบัน) เซ็นชื่อเรียบร้อยแล้ว พร้อมเอกสารหมายเลข 1 และใบแสดงผลการศึกษา (รหัสเดิมหรือสถาบันเดิม) <br/>
-                    ส่งที่สำนักศึกษาทั่วไป ห้อง RN1-101 ภายในวันจันทร์ที่ 6 กรกฎาคม 2569 <br/>
+                    ส่งที่สำนักศึกษาทั่วไป ห้อง RN1-101 ภายในวันจันทร์ที่ 6 กรกฎาคม 2569 <br/><br/>
                     ประกาศโดย งานพัฒนาหลักสูตร สำนักศึกษาทั่วไป วันที่ประกาศ 2 กรกฎาคม 2569
                   </div>
                 </div>
 
-                <div className="bg-white border border-gray-300 shadow-sm rounded-t-md overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="bg-[#303030] text-gray-200 p-3 text-xs md:text-sm font-medium">
-                    การยื่นเรียนซ้ำ/เรียนแทนรายวิชาศึกษาทั่วไป <span className="text-red-500 font-bold">(ด่วนมาก)</span>
+                <div className="bg-white border border-gray-300 rounded-sm overflow-hidden">
+                  <div className="bg-[#303030] text-gray-100 p-3 text-xs md:text-[14px] font-medium">
+                    การยื่นเรียนซ้ำ/เรียนแทนรายวิชาศึกษาทั่วไป <span className="text-red-500 font-bold ml-1">(ด่วนมาก)</span>
                   </div>
-                  <div className="p-4 md:p-6 text-xs md:text-sm text-gray-700 leading-relaxed">
-                    ดาวน์โหลด <a href="#" className="text-blue-600 hover:text-blue-800 underline transition-colors">คำร้อง</a> และกรอกข้อมูลแล้วส่งเอกสารให้สำนักศึกษาทั่วไป ให้ถ่ายภาพหรือ Scan
+                  <div className="p-5 md:p-6 text-xs md:text-[14px] text-gray-700 leading-relaxed">
+                    ดาวน์โหลด <a href="#" className="text-blue-600 hover:text-blue-800 underline">คำร้อง</a> และกรอกข้อมูลแล้วส่งเอกสารให้สำนักศึกษาทั่วไป ให้ถ่ายภาพหรือ Scan
                     เอกสารคำร้องที่อาจารย์ที่ปรึกษาเซ็นเรียนร้อยแล้ว แล้ว upload <br/>
-                    เอกสารในเว็บไซต์ <a href="#" className="text-blue-600 hover:text-blue-800 underline transition-colors">ระบบยื่นเอกสารรายวิชาศึกษาทั่วไป</a> โดยนิสิตสามารถตรวจสอบรายชื่อนิสิตที่สำนักศึกษาทั่วไป
-                    ได้ส่งคำร้องไปที่กองทะเบียนและประมวลผลแล้ว ได้ที่ลิงค์นี้ครับ <a href="#" className="text-blue-600 hover:text-blue-800 underline transition-colors">ติดตามผลการอนุมัติ</a><br/><br/>
+                    เอกสารในเว็บไซต์ <a href="#" className="text-blue-600 hover:text-blue-800 underline">ระบบยื่นเอกสารรายวิชาศึกษาทั่วไป</a> โดยนิสิตสามารถตรวจสอบรายชื่อนิสิตที่สำนักศึกษาทั่วไป
+                    ได้ส่งคำร้องไปที่กองทะเบียนและประมวลผลแล้ว ได้ที่ลิงค์นี้ครับ <a href="#" className="text-blue-600 hover:text-blue-800 underline">ติดตามผลการอนุมัติ</a><br/><br/>
                     ประกาศโดย สำนักศึกษาทั่วไป วันที่ประกาศ 14 มิถุนายน 2566
                   </div>
                 </div>
-              </div>
 
-            </section>
-          </div>
+              </div>
+            </div>
+
+          </section>
         </div>
       </main>
 
-      {/* Footer */}
+      {/* ================= Footer ================= */}
       <footer className="bg-[#31343e] text-[#f1f1f1] py-10 md:py-14 mt-auto text-[12px] md:text-[14px]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-x-6 gap-y-3 md:gap-y-5 items-start">
